@@ -1,0 +1,10 @@
+package coltonbertrand.golf_management_application.repositories;
+
+import coltonbertrand.golf_management_application.classes.Users;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UsersRepository extends JpaRepository<Users,Integer> {
+    Users findByEmail(String email);
+}
