@@ -20,20 +20,19 @@ public class Course_Holes {
     @NotNull
     @Min(3)
     @Max(5)
-    private Integer course_hole_par;
+    private Integer courseHolePar;
 
     @Column(name="course_hole_length")
-    private Integer course_hole_length;
+    private Integer courseHoleLength;
 
     @Column(name="course_hole_number")
     @Min(1)
     @Max(18)
-    private Integer course_hole_number;
+    @NotNull
+    private Integer courseHoleNumber;
 
     @JoinColumn(name="course_id")
     @ManyToOne
     private Courses course;
-
-
 
 }

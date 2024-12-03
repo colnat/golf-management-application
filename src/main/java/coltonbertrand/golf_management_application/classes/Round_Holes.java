@@ -14,18 +14,18 @@ public class Round_Holes {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="round_hole_id")
-    private Integer round_hole_id;
+    private Integer id;
 
     @Column(name="hole_score")
     @NotNull
     @Min(1)
-    private Integer hole_score;
+    private Integer holeScore;
 
     @Column(name="round_hole_number")
     @NotNull
     @Min(1)
     @Max(18)
-    private Integer round_hole_number;
+    private Integer roundHoleNumber;
 
     @ManyToOne
     @JoinColumn(name="round_id")

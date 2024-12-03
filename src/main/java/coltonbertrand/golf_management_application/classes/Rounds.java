@@ -19,22 +19,22 @@ public class Rounds {
     private Integer id;
 
     @Column(name = "fairways_hit")
-    private Integer fairways_hit;
+    private Integer fairwaysHit;
 
     @Column(name = "three_putts")
-    private Integer three_putts;
+    private Integer threePutts;
 
     @Column(name="slices_or_draws")
-    private Integer slices_or_draws;
+    private Integer slicesOrDraws;
 
     @Column(name="round_score")
     @NotNull
     @Min(18)
-    private Integer round_score;
+    private Integer roundScore;
 
     @Column(name="date_played")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date date_played;
+    private Date datePlayed;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

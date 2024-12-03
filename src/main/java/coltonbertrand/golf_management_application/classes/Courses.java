@@ -3,8 +3,6 @@ package coltonbertrand.golf_management_application.classes;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.List;
@@ -20,21 +18,21 @@ public class Courses {
 
     @Column(name = "course_name")
     @NotBlank
-    private String course_name;
+    private String courseName;
 
     @Column(name="course_rating")
-    private Integer course_rating;
+    private Integer courseRating;
 
     @Column(name="course_location")
-    private String course_location;
+    private String courseLocation;
 
     @Column(name = "course_par")
     @NotNull
-    private Integer course_par;
+    private Integer coursePar;
 
     @Column(name = "course_type")
     @NotNull
-    private Integer course_type;
+    private Integer courseType;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -42,7 +40,5 @@ public class Courses {
 
     @OneToMany(mappedBy = "course")
     private List<Course_Holes> courseHolesList;
-
-
 
 }

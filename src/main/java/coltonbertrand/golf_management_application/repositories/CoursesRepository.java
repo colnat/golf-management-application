@@ -5,8 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CoursesRepository extends JpaRepository<Courses,Integer> {
-    List<Courses> findByUserId(Integer user_id);
+    List<Courses>findByUserId(Integer user_id);
+    Courses findByUserIdAndCourseName(Integer user_id, String course_name);
 }
