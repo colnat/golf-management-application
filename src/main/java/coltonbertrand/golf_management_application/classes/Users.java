@@ -8,6 +8,7 @@ import lombok.Data;
 
 //if getting error maybe drop @Data and do setters and getters manually
 //Maybe use @Pattern for a password constraint
+//Might make repositories private in the service classes
 @Data
 @Entity
 @Table(name="users")
