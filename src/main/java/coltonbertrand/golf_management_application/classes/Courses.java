@@ -34,6 +34,7 @@ public class Courses {
     @NotNull
     private Integer courseType;
 
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users user;

@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface CoursesRepository extends JpaRepository<Courses,Integer> {
-    List<Courses>findByUserId(Integer user_id);
-    Courses findByUserIdAndCourseName(Integer user_id, String course_name);
+    List<Courses>findByUserId(Integer userId);
+    Courses findByUserIdAndCourseName(Integer userId, String courseName);
 }

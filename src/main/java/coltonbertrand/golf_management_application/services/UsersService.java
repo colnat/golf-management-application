@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UsersService {
     @Autowired
-    UsersRepository usersRepository;
+    private UsersRepository usersRepository;
 
     public Users addUser(Users user){
         Users emailExists = usersRepository.findByEmail(user.getEmail());

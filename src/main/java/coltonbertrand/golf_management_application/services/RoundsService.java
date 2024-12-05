@@ -10,6 +10,8 @@ import coltonbertrand.golf_management_application.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,15 +19,15 @@ import java.util.Optional;
 public class RoundsService {
 
     @Autowired
-    RoundsRepository roundsRepository;
+    private RoundsRepository roundsRepository;
     @Autowired
-    UsersRepository usersRepository;
+    private UsersRepository usersRepository;
     @Autowired
-    CoursesRepository coursesRepository;
-    public Rounds addRound(Rounds round,String course_name,Integer user_id){
-        Users user = usersRepository.findById(user_id)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + user_id));
-        Courses course = coursesRepository.findByUserIdAndCourseName(user_id,course_name);
+    private CoursesRepository coursesRepository;
+    public Rounds addRound(Rounds round,String course_name,Integer userId){
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
+        Courses course = coursesRepository.findByUserIdAndCourseName(userId,course_name);
         List<Round_Holes> holes = round.getRoundHolesList();
         round.setUser(user);
         round.setCourse(course);
@@ -38,5 +40,43 @@ public class RoundsService {
         return roundsRepository.save(round);
     }
 
+    public List<Rounds> getRoundsByCourse(Integer courseId) {
+        return roundsRepository.findByCourseId(courseId);
+    }
+
+    public List<Rounds> getRoundsByUser(Integer userId) {
+        return roundsRepository.findByUserId(userId);
+    }
+
+    public Integer handicap(Integer userId) {
+        List<Rounds> getRounds = roundsRepository.findByUserIdAndRoundLength(userId, 18);
+        List<Rounds> mostRecentRounds = getRounds.subList(0, 19);
+        List<Integer> scores = new ArrayList<>();
+        int sum = 0;
+        int handicap;
+        if (getRounds.size() < 20) {
+            return -101;
+        }
+        for(int i=0; i<=mostRecentRounds.size();i++){
+            int score;
+            Rounds round = mostRecentRounds.get(i);
+            Integer roundScore = round.getRoundScore();
+            Courses course = round.getCourse();
+            Integer coursePar = course.getCoursePar();
+            score = roundScore - coursePar;
+            scores.add(score);
+        }
+        Collections.sort(scores);
+        for(int i=0;i<8;i++){
+            sum += scores.get(i);
+        }
+        handicap = sum / 8;
+        return handicap;
+
+    }
+
 
 }
+
+
+

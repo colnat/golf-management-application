@@ -8,6 +8,8 @@ import java.util.List;
 
 @Repository
 public interface RoundsRepository extends JpaRepository<Rounds,Integer> {
-    List<Rounds> findByUserId(Integer user_id);
-    List<Rounds> findByCourseId(Integer course_id);
+    List<Rounds> findByUserId(Integer userId);
+    List<Rounds> findByCourseId(Integer courseId);
+
+    List<Rounds> findByUserIdAndRoundLength(Integer userId, Integer roundLength);
 }

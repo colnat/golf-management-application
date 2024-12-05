@@ -36,6 +36,10 @@ public class Rounds {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date datePlayed;
 
+    @Column(name = "round_length")
+    @NotNull
+    private Integer roundLength;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users user;
