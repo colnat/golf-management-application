@@ -23,7 +23,6 @@ public class CoursesService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
         course.setUser(user);
         List<Course_Holes> holes = course.getCourseHolesList();
-        //course.setCourseHolesList(holes);
         int course_par = 0;
         for(Course_Holes hole : holes ){
             course_par+= hole.getCourseHolePar();

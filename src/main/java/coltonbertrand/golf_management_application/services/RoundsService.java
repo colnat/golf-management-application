@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class RoundsService {
@@ -24,11 +24,13 @@ public class RoundsService {
     private UsersRepository usersRepository;
     @Autowired
     private CoursesRepository coursesRepository;
+    //add round
     public Rounds addRound(Rounds round,String course_name,Integer userId){
         Users user = usersRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
         Courses course = coursesRepository.findByUserIdAndCourseName(userId,course_name);
-        List<Round_Holes> holes = round.getRoundHolesList();
+        List<Round_Holes> holes = round.getRoundHolesList(); //get holes played in round
+        round.setRoundLength(holes.size());
         round.setUser(user);
         round.setCourse(course);
         int round_score = 0;
@@ -39,40 +41,36 @@ public class RoundsService {
         round.setRoundScore(round_score);
         return roundsRepository.save(round);
     }
-
+    //If a user wants to view rounds they played at a particular course
     public List<Rounds> getRoundsByCourse(Integer courseId) {
         return roundsRepository.findByCourseId(courseId);
     }
-
+    //get the rounds by user
     public List<Rounds> getRoundsByUser(Integer userId) {
         return roundsRepository.findByUserId(userId);
     }
-
+    //find a users handicap
     public Integer handicap(Integer userId) {
-        List<Rounds> getRounds = roundsRepository.findByUserIdAndRoundLength(userId, 18);
-        List<Rounds> mostRecentRounds = getRounds.subList(0, 19);
-        List<Integer> scores = new ArrayList<>();
-        int sum = 0;
-        int handicap;
-        if (getRounds.size() < 20) {
-            return -101;
+        //only calculating 18 hole handicap cause it's the right way. Using the 20 most recent rounds
+        //and averaging the best of 8.
+        //can adjust the findByUserIdAndRoundLength to select top 20 by date
+        //roundsRepository.findTop20ByUserIdAndRoundLengthOrderByDateDesc(userId, 18);
+        List<Rounds> getAllRounds = roundsRepository.findByUserIdAndRoundLength(userId, 18);
+        if (getAllRounds.size() < 20) {
+            throw new IllegalArgumentException("Must have at least 20 rounds to calculate handicap.");
         }
-        for(int i=0; i<=mostRecentRounds.size();i++){
-            int score;
-            Rounds round = mostRecentRounds.get(i);
-            Integer roundScore = round.getRoundScore();
-            Courses course = round.getCourse();
-            Integer coursePar = course.getCoursePar();
-            score = roundScore - coursePar;
-            scores.add(score);
+        List<Rounds> mostRecentRounds = getAllRounds.subList(0, 20);
+        List<Integer> scores = new ArrayList<>();
+        for (Rounds mostRecentRound : mostRecentRounds) {
+         int score = mostRecentRound.getRoundScore() - mostRecentRound.getCourse().getCoursePar();
+         scores.add(score);
         }
         Collections.sort(scores);
+        int sum = 0;
         for(int i=0;i<8;i++){
             sum += scores.get(i);
         }
-        handicap = sum / 8;
-        return handicap;
-
+        return sum / 8;
     }
 
 
