@@ -27,7 +27,7 @@ public class Round_Holes {
     @Max(18)
     private Integer roundHoleNumber;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="round_id")
     private Rounds round;
 

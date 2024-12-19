@@ -31,7 +31,7 @@ public class Course_Holes {
     private Integer courseHoleNumber;
 
     @JoinColumn(name="course_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Courses course;
 
 }

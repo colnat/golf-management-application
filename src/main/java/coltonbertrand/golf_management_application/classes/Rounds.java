@@ -40,15 +40,15 @@ public class Rounds {
     @NotNull
     private Integer roundLength;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private Users user;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "course_id")
     private Courses course;
 
-    @OneToMany(mappedBy = "round")
+    @OneToMany(mappedBy = "round",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Round_Holes> roundHolesList;
 
 }

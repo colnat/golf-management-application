@@ -29,6 +29,9 @@ public class RoundsService {
         Users user = usersRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
         Courses course = coursesRepository.findByUserIdAndCourseName(userId,course_name);
+        if(course == null){
+            throw new IllegalArgumentException("Course not found");
+        }
         List<Round_Holes> holes = round.getRoundHolesList(); //get holes played in round
         round.setRoundLength(holes.size());
         round.setUser(user);

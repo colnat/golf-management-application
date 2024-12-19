@@ -34,12 +34,11 @@ public class Courses {
     @NotNull
     private Integer courseType;
 
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private Users user;
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Course_Holes> courseHolesList;
 
 }
