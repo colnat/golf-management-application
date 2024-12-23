@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173/", allowCredentials = "true")
 @RequestMapping("/users")
 public class UserController {
 
@@ -17,13 +18,16 @@ public class UserController {
 
     @PostMapping("/register")
     public Users registerUser(@Valid @RequestBody Users user) {
+        System.out.println(user);
         return usersService.addUser(user);
     }
 
-    @GetMapping("/login")
-    public Users login(@RequestBody Users user, HttpSession session){
+    @PostMapping("/login")
+    public ResponseEntity<Users> login( @RequestBody Users user, HttpSession session){
            Users authUser = usersService.loginUser(user.getEmail(),user.getPassword());
+
            session.setAttribute("user",authUser);
-           return authUser;
+           System.out.println(authUser);
+           return ResponseEntity.ok().body(authUser);
     }
 }
