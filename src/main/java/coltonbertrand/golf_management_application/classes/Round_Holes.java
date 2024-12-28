@@ -1,5 +1,7 @@
 package coltonbertrand.golf_management_application.classes;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -27,7 +29,8 @@ public class Round_Holes {
     @Max(18)
     private Integer roundHoleNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="round_id")
     private Rounds round;
 

@@ -1,16 +1,18 @@
 package coltonbertrand.golf_management_application.classes;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @Entity
 @Table(name="user_courses")
-public class Courses {
+public class Courses implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="course_id")
@@ -27,18 +29,17 @@ public class Courses {
     private String courseLocation;
 
     @Column(name = "course_par")
-    @NotNull
     private Integer coursePar;
 
     @Column(name = "course_type")
-    @NotNull
     private Integer courseType;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private Users user;
 
-    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+
+    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Course_Holes> courseHolesList;
 
 }

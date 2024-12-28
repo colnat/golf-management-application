@@ -23,16 +23,17 @@ public class CoursesService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
         course.setUser(user);
         List<Course_Holes> holes = course.getCourseHolesList();
-        int course_par = 0;
+       int course_par = 0;
+
         for(Course_Holes hole : holes ){
             course_par+= hole.getCourseHolePar();
             hole.setCourse(course);
         }
         course.setCoursePar(course_par);
+        course.setCourseType(holes.size());
         return coursesRepository.save(course);
-        // int course_par = holes.stream().mapToInt(Course_Holes::getCourse_hole_par).sum();
     }
-
+    //int course_par = holes.stream().mapToInt(Course_Holes::getCourseHolePar).sum();
     public List<Courses> getCourses(Integer user_id){
         return coursesRepository.findByUserId(user_id);
     }

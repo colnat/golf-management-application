@@ -1,5 +1,7 @@
 package coltonbertrand.golf_management_application.classes;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -30,8 +32,10 @@ public class Course_Holes {
     @NotNull
     private Integer courseHoleNumber;
 
+    //Added to prevent loop when sending JSON
+    @JsonIgnore
     @JoinColumn(name="course_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Courses course;
 
 }

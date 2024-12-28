@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
-    UsersService usersService;
+    private UsersService usersService;
 
     @PostMapping("/register")
     public Users registerUser(@Valid @RequestBody Users user) {
@@ -25,9 +25,8 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<Users> login( @RequestBody Users user, HttpSession session){
            Users authUser = usersService.loginUser(user.getEmail(),user.getPassword());
-
            session.setAttribute("user",authUser);
            System.out.println(authUser);
-           return ResponseEntity.ok().body(authUser);
+          return ResponseEntity.ok().body(authUser);
     }
 }
