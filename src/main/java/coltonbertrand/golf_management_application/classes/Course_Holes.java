@@ -35,7 +35,6 @@ public class Course_Holes {
     //Added to prevent loop when sending JSON
     @JsonIgnore
     @JoinColumn(name="course_id")
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Courses course;
-
 }

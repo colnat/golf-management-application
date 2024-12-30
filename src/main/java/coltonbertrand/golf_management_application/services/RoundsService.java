@@ -13,7 +13,11 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+//only calculating 18 hole handicap cause it's the right way. Using the 20 most recent rounds
+//and averaging the best of 8.
+//can adjust the findByUserIdAndRoundLength to select top 20 by date
+//roundsRepository.findTop20ByUserIdAndRoundLengthOrderByDateDesc(userId, 18);
+//Do a check if the course is a 9 hole course then multiply the course par by two if it is
 
 @Service
 public class RoundsService {
@@ -48,16 +52,14 @@ public class RoundsService {
     public List<Rounds> getRoundsByCourse(Integer courseId) {
         return roundsRepository.findByCourseId(courseId);
     }
+
     //get the rounds by user
     public List<Rounds> getRoundsByUser(Integer userId) {
         return roundsRepository.findByUserId(userId);
     }
+
     //find a users handicap
     public Integer handicap(Integer userId) {
-        //only calculating 18 hole handicap cause it's the right way. Using the 20 most recent rounds
-        //and averaging the best of 8.
-        //can adjust the findByUserIdAndRoundLength to select top 20 by date
-        //roundsRepository.findTop20ByUserIdAndRoundLengthOrderByDateDesc(userId, 18);
         List<Rounds> getAllRounds = roundsRepository.findByUserIdAndRoundLength(userId, 18);
         if (getAllRounds.size() < 20) {
             throw new IllegalArgumentException("Must have at least 20 rounds to calculate handicap.");
