@@ -6,13 +6,14 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Data
 @Entity
 @Table(name="user_rounds")
-public class Rounds {
+public class Rounds implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="round_id")
@@ -28,7 +29,6 @@ public class Rounds {
     private Integer slicesOrDraws;
 
     @Column(name="round_score")
-    @NotNull
     @Min(18)
     private Integer roundScore;
 
@@ -37,14 +37,13 @@ public class Rounds {
     private Date datePlayed;
 
     @Column(name = "round_length")
-    @NotNull
     private Integer roundLength;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private Users user;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "course_id")
     private Courses course;
 

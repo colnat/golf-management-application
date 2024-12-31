@@ -8,18 +8,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:5173/", allowCredentials = "true")
 @RequestMapping("/courses")
 public class CourseController {
 
     @Autowired
-    CoursesService coursesService;
+    private CoursesService coursesService;
+
     @PostMapping("/saveCourse")
     public ResponseEntity<Courses> addCourse(@RequestBody Courses course, HttpSession session){
         Users user = (Users) session.getAttribute("user");
         System.out.println(course);
         Courses savedCourse = coursesService.addCourse(course, user.getId());
         return ResponseEntity.ok().body(savedCourse);
+    }
+
+    @GetMapping("/getCourses")
+    public  ResponseEntity <List<Courses>> getCourses (HttpSession session){
+        Users user = (Users) session.getAttribute("user");
+        List<Courses> getUserCourses = coursesService.getCourses(user.getId());
+        return ResponseEntity.ok().body(getUserCourses);
     }
 }

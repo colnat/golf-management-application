@@ -18,7 +18,7 @@ import java.util.List;
 //can adjust the findByUserIdAndRoundLength to select top 20 by date
 //roundsRepository.findTop20ByUserIdAndRoundLengthOrderByDateDesc(userId, 18);
 //Do a check if the course is a 9 hole course then multiply the course par by two if it is
-
+//for the handicap
 @Service
 public class RoundsService {
 
@@ -38,6 +38,7 @@ public class RoundsService {
         }
         List<Round_Holes> holes = round.getRoundHolesList(); //get holes played in round
         round.setRoundLength(holes.size());
+
         round.setUser(user);
         round.setCourse(course);
         int round_score = 0;
