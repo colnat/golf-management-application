@@ -29,10 +29,11 @@ public class RoundsService {
     @Autowired
     private CoursesRepository coursesRepository;
     //add round
-    public Rounds addRound(Rounds round,String course_name,Integer userId){
+    public Rounds addRound(Rounds round,Integer courseId,Integer userId){
         Users user = usersRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
-        Courses course = coursesRepository.findByUserIdAndCourseName(userId,course_name);
+        Courses course = coursesRepository.findById(courseId)
+                .orElseThrow(() -> new IllegalArgumentException("Course was not found" + courseId));
         if(course == null){
             throw new IllegalArgumentException("Course not found");
         }
@@ -83,4 +84,4 @@ public class RoundsService {
 }
 
 
-
+// Courses course = coursesRepository.findByUserIdAndCourseName(userId,course_name);

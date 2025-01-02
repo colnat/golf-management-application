@@ -29,11 +29,10 @@ public class Rounds implements Serializable {
     private Integer slicesOrDraws;
 
     @Column(name="round_score")
-    @Min(18)
     private Integer roundScore;
 
     @Column(name="date_played")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "MM/dd/yyyy")
     private Date datePlayed;
 
     @Column(name = "round_length")
