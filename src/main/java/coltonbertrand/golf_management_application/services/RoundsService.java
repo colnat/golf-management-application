@@ -32,8 +32,10 @@ public class RoundsService {
     public Rounds addRound(Rounds round,Integer courseId,Integer userId){
         Users user = usersRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
+
         Courses course = coursesRepository.findById(courseId)
                 .orElseThrow(() -> new IllegalArgumentException("Course was not found" + courseId));
+
         if(course == null){
             throw new IllegalArgumentException("Course not found");
         }
@@ -50,6 +52,8 @@ public class RoundsService {
         round.setRoundScore(round_score);
         return roundsRepository.save(round);
     }
+
+
     //If a user wants to view rounds they played at a particular course
     public List<Rounds> getRoundsByCourse(Integer courseId) {
         return roundsRepository.findByCourseId(courseId);

@@ -19,23 +19,24 @@ public class RoundController {
     @Autowired
     private RoundsService roundsService;
 
-    //Everything from react is sent in one thing of JSON, so it needs
-    @PostMapping("/saveRound")
-    public ResponseEntity<Rounds> addRound(@RequestBody Map<String, Object> requestData, HttpSession session) {
+
+    @PostMapping("/saveRound/{courseId}")
+    public ResponseEntity<Rounds> addRound(@RequestBody Rounds round, @PathVariable Integer courseId, HttpSession session){
         Users user = (Users) session.getAttribute("user");
-        System.out.println(requestData);
-        Rounds round = new ObjectMapper().convertValue(requestData.get("round"), Rounds.class);
-        Integer courseId = (Integer) requestData.get("courseId");
-        Rounds savedRound = roundsService.addRound(round, courseId, user.getId());
+        System.out.println(user);
+        System.out.println(round);
+        Rounds savedRound = roundsService.addRound(round,courseId,user.getId());
         return ResponseEntity.ok().body(savedRound);
-    }
+}
 
 }
+
 //@PostMapping("/saveRound")
-//public ResponseEntity<Rounds> addRound(@RequestBody Rounds round, String courseName, HttpSession session){
+//public ResponseEntity<Rounds> addRound(@RequestBody Map<String, Object> requestData, HttpSession session) {
 //    Users user = (Users) session.getAttribute("user");
-//    System.out.println(user);
-//    System.out.println(round);
-//    Rounds savedRound = roundsService.addRound(round,courseName,user.getId());
+//    System.out.println(requestData);
+//    Rounds round = new ObjectMapper().convertValue(requestData.get("round"), Rounds.class);
+//    Integer courseId = (Integer) requestData.get("courseId");
+//    Rounds savedRound = roundsService.addRound(round, courseId, user.getId());
 //    return ResponseEntity.ok().body(savedRound);
 //}
