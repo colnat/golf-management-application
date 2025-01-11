@@ -38,7 +38,8 @@ public class Courses implements Serializable {
     @JoinColumn(name = "user_id")
     private Users user;
 
-    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Course_Holes> courseHolesList;
+
 
 }

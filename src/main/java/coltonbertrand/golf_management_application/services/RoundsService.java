@@ -1,9 +1,6 @@
 package coltonbertrand.golf_management_application.services;
 
-import coltonbertrand.golf_management_application.classes.Courses;
-import coltonbertrand.golf_management_application.classes.Round_Holes;
-import coltonbertrand.golf_management_application.classes.Rounds;
-import coltonbertrand.golf_management_application.classes.Users;
+import coltonbertrand.golf_management_application.classes.*;
 import coltonbertrand.golf_management_application.repositories.CoursesRepository;
 import coltonbertrand.golf_management_application.repositories.RoundsRepository;
 import coltonbertrand.golf_management_application.repositories.UsersRepository;
@@ -46,6 +43,7 @@ public class RoundsService {
         round.setCourse(course);
         int round_score = 0;
         for(Round_Holes hole : holes){
+
             round_score += hole.getHoleScore();
             hole.setRound(round);
         }
@@ -53,15 +51,14 @@ public class RoundsService {
         return roundsRepository.save(round);
     }
 
+    public List<Rounds> getRoundsByUser(Integer userId) {
+        return roundsRepository.findByUserId(userId);
+    }
+
 
     //If a user wants to view rounds they played at a particular course
     public List<Rounds> getRoundsByCourse(Integer courseId) {
         return roundsRepository.findByCourseId(courseId);
-    }
-
-    //get the rounds by user
-    public List<Rounds> getRoundsByUser(Integer userId) {
-        return roundsRepository.findByUserId(userId);
     }
 
     //find a users handicap

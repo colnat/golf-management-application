@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
 @RestController
@@ -27,5 +28,14 @@ public class RoundController {
         Rounds savedRound = roundsService.addRound(round,courseId,user.getId());
         return ResponseEntity.ok().body(savedRound);
 }
+
+    @GetMapping("/getRounds")
+    public ResponseEntity<List<Rounds>> getRounds(HttpSession session){
+        Users user = (Users) session.getAttribute("user");
+        List<Rounds> userRounds = roundsService.getRoundsByUser(user.getId());
+        return ResponseEntity.ok().body(userRounds);
+    }
+
+
 
 }

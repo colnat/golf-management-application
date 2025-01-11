@@ -46,7 +46,7 @@ public class Rounds implements Serializable {
     @JoinColumn(name = "course_id")
     private Courses course;
 
-    @OneToMany(mappedBy = "round",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "round",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Round_Holes> roundHolesList;
 
 }

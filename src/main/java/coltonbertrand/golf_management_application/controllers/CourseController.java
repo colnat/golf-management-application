@@ -32,4 +32,15 @@ public class CourseController {
         List<Courses> getUserCourses = coursesService.getCourses(user.getId());
         return ResponseEntity.ok().body(getUserCourses);
     }
+
+    @DeleteMapping("/delete-course/{courseId}")
+    public ResponseEntity<?> deleteCourse(@PathVariable Integer courseId, HttpSession session){
+        Users user = (Users) session.getAttribute("user");
+        System.out.println(courseId);
+        if(user == null){
+            return ResponseEntity.notFound().build();
+        }
+        coursesService.deleteCourse(courseId);
+        return ResponseEntity.ok().build();
+    }
 }

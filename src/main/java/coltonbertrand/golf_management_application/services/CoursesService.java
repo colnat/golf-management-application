@@ -18,6 +18,7 @@ public class CoursesService {
     private CoursesRepository coursesRepository;
     @Autowired
     private UsersRepository usersRepository;
+
     public Courses addCourse(Courses course, Integer userId){
         Users user = usersRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
@@ -36,5 +37,9 @@ public class CoursesService {
     //int course_par = holes.stream().mapToInt(Course_Holes::getCourseHolePar).sum();
     public List<Courses> getCourses(Integer user_id){
         return coursesRepository.findByUserId(user_id);
+    }
+
+    public void deleteCourse(Integer courseId){
+        coursesRepository.deleteById(courseId);
     }
 }
