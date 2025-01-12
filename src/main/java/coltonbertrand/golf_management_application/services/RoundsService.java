@@ -55,6 +55,8 @@ public class RoundsService {
         return roundsRepository.findByUserId(userId);
     }
 
+    public void deleteRound(Integer roundId){ roundsRepository.deleteById(roundId);}
+
 
     //If a user wants to view rounds they played at a particular course
     public List<Rounds> getRoundsByCourse(Integer courseId) {

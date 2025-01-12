@@ -36,6 +36,16 @@ public class RoundController {
         return ResponseEntity.ok().body(userRounds);
     }
 
+    @DeleteMapping("/deleteRound/{roundId}")
+    public ResponseEntity<?> deleteRound(@PathVariable Integer roundId, HttpSession session){
+        Users user = (Users) session.getAttribute("user");
+        if(user == null){
+            return ResponseEntity.notFound().build();
+        }
+        roundsService.deleteRound( roundId);
+        return ResponseEntity.ok().build();
+    }
+
 
 
 }
