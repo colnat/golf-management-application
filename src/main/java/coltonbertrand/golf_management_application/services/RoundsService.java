@@ -51,11 +51,14 @@ public class RoundsService {
         return roundsRepository.save(round);
     }
 
+    //Get the users rounds by selecting most recent first
     public List<Rounds> getRoundsByUser(Integer userId) {
-        return roundsRepository.findByUserId(userId);
+        return roundsRepository.findByUserIdOrderByDatePlayedDesc(userId);
     }
 
     public void deleteRound(Integer roundId){ roundsRepository.deleteById(roundId);}
+
+
 
 
     //If a user wants to view rounds they played at a particular course

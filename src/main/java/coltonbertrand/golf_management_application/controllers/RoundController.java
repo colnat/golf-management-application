@@ -4,6 +4,7 @@ import coltonbertrand.golf_management_application.classes.Rounds;
 import coltonbertrand.golf_management_application.classes.Users;
 import coltonbertrand.golf_management_application.services.RoundsService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class RoundController {
 
 
     @PostMapping("/saveRound/{courseId}")
-    public ResponseEntity<Rounds> addRound(@RequestBody Rounds round, @PathVariable Integer courseId, HttpSession session){
+    public ResponseEntity<Rounds> addRound(@Valid @RequestBody Rounds round, @PathVariable Integer courseId, HttpSession session){
         Users user = (Users) session.getAttribute("user");
         System.out.println(user);
         System.out.println(round);

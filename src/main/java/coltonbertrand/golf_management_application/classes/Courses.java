@@ -23,6 +23,7 @@ public class Courses implements Serializable {
     private String courseName;
 
     @Column(name="course_rating")
+    @NotNull
     private Integer courseRating;
 
     @Column(name="course_location")

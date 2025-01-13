@@ -4,6 +4,7 @@ import coltonbertrand.golf_management_application.classes.Courses;
 import coltonbertrand.golf_management_application.classes.Users;
 import coltonbertrand.golf_management_application.services.CoursesService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class CourseController {
     private CoursesService coursesService;
 
     @PostMapping("/saveCourse")
-    public ResponseEntity<Courses> addCourse(@RequestBody Courses course, HttpSession session){
+    public ResponseEntity<Courses> addCourse(@Valid @RequestBody Courses course, HttpSession session){
         Users user = (Users) session.getAttribute("user");
         System.out.println(course);
         Courses savedCourse = coursesService.addCourse(course, user.getId());

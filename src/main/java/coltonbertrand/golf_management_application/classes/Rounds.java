@@ -20,12 +20,15 @@ public class Rounds implements Serializable {
     private Integer id;
 
     @Column(name = "fairways_hit")
+    @NotNull
     private Integer fairwaysHit;
 
     @Column(name = "three_putts")
+    @NotNull
     private Integer threePutts;
 
     @Column(name="slices_or_draws")
+    @NotNull
     private Integer slicesOrDraws;
 
     @Column(name="round_score")
@@ -33,6 +36,7 @@ public class Rounds implements Serializable {
 
     @Column(name="date_played")
     @DateTimeFormat(pattern = "MM/dd/yyyy")
+    @NotNull
     private Date datePlayed;
 
     @Column(name = "round_length")
