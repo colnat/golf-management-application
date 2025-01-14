@@ -10,6 +10,6 @@ import java.util.List;
 public interface RoundsRepository extends JpaRepository<Rounds,Integer> {
     List<Rounds> findByUserIdOrderByDatePlayedDesc(Integer userId);
     List<Rounds> findByCourseId(Integer courseId);
-
+    List<Rounds> findByUserId(Integer userId);
     List<Rounds> findByUserIdAndRoundLength(Integer userId, Integer roundLength);
 }

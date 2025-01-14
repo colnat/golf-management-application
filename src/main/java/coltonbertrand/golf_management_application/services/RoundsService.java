@@ -6,10 +6,8 @@ import coltonbertrand.golf_management_application.repositories.RoundsRepository;
 import coltonbertrand.golf_management_application.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 //only calculating 18 hole handicap cause it's the right way. Using the 20 most recent rounds
 //and averaging the best of 8.
 //can adjust the findByUserIdAndRoundLength to select top 20 by date
@@ -58,8 +56,13 @@ public class RoundsService {
 
     public void deleteRound(Integer roundId){ roundsRepository.deleteById(roundId);}
 
-
-
+    public Optional<Rounds> findBest18HoleRound(Integer userId){
+        List<Rounds> findUsersRounds = roundsRepository.findByUserIdAndRoundLength(userId,18);
+        if(findUsersRounds.isEmpty()){
+            throw new RuntimeException("User needs at least one 18 hole round");
+        }
+        return findUsersRounds.stream().min(Comparator.comparing(round -> round.getRoundScore() - round.getCourse().getEighteenHolePar()));
+    }
 
     //If a user wants to view rounds they played at a particular course
     public List<Rounds> getRoundsByCourse(Integer courseId) {
@@ -70,12 +73,12 @@ public class RoundsService {
     public Integer handicap(Integer userId) {
         List<Rounds> getAllRounds = roundsRepository.findByUserIdAndRoundLength(userId, 18);
         if (getAllRounds.size() < 20) {
-            throw new IllegalArgumentException("Must have at least 20 rounds to calculate handicap.");
+            throw new RuntimeException("Must have at least 20 rounds to calculate handicap.");
         }
         List<Rounds> mostRecentRounds = getAllRounds.subList(0, 20);
         List<Integer> scores = new ArrayList<>();
         for (Rounds mostRecentRound : mostRecentRounds) {
-         int score = mostRecentRound.getRoundScore() - mostRecentRound.getCourse().getCoursePar();
+         int score = mostRecentRound.getRoundScore() - mostRecentRound.getCourse().getEighteenHolePar();
          scores.add(score);
         }
         Collections.sort(scores);

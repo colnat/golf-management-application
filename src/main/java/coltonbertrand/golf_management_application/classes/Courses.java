@@ -1,6 +1,6 @@
 package coltonbertrand.golf_management_application.classes;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,8 +29,11 @@ public class Courses implements Serializable {
     @Column(name="course_location")
     private String courseLocation;
 
-    @Column(name = "course_par")
-    private Integer coursePar;
+    @Column(name="eighteen_hole_par")
+    private Integer eighteenHolePar;
+
+    @Column(name="nine_hole_par")
+    private Integer nineHolePar;
 
     @Column(name = "course_type")
     private Integer courseType;

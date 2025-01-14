@@ -24,14 +24,32 @@ public class CoursesService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
         course.setUser(user);
         List<Course_Holes> holes = course.getCourseHolesList();
-       int course_par = 0;
-
-        for(Course_Holes hole : holes ){
-            course_par+= hole.getCourseHolePar();
-            hole.setCourse(course);
-        }
-        course.setCoursePar(course_par);
         course.setCourseType(holes.size());
+
+        if(holes.size() == 9){
+            int nineHolePar = 0;
+            for(Course_Holes hole: holes){
+                nineHolePar+=hole.getCourseHolePar();
+                hole.setCourse(course);
+            }
+            course.setNineHolePar(nineHolePar);
+            course.setEighteenHolePar(nineHolePar*2);
+        }
+
+        if(holes.size() == 18){
+            int eighteenHolePar = 0;
+            int nineHolePar = 0;
+            for(int i=0;i<holes.size();i++){
+              Course_Holes hole = holes.get(i);
+              eighteenHolePar+=hole.getCourseHolePar();
+              hole.setCourse(course);
+              if(i < 9){
+                  nineHolePar+=hole.getCourseHolePar();
+              }
+            }
+            course.setNineHolePar(nineHolePar);
+            course.setEighteenHolePar(eighteenHolePar);
+        }
         return coursesRepository.save(course);
     }
     //int course_par = holes.stream().mapToInt(Course_Holes::getCourseHolePar).sum();
