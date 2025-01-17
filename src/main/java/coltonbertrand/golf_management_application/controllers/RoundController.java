@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -43,9 +44,43 @@ public class RoundController {
         if(user == null){
             return ResponseEntity.notFound().build();
         }
-        roundsService.deleteRound( roundId);
+        roundsService.deleteRound(roundId);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/best-18-hole")
+    public ResponseEntity<Optional<Rounds>> findBest18HoleRound(HttpSession session){
+        Users user = (Users) session.getAttribute("user");
+        if(user == null){
+            return ResponseEntity.notFound().build();
+        }
+        Optional<Rounds> best18HoleRound = roundsService.findBest18HoleRound(user.getId());
+        return ResponseEntity.ok().body(best18HoleRound);
+    }
+
+    @GetMapping("/best-9-hole")
+    public ResponseEntity<Optional<Rounds>> findBest9HoleRound(HttpSession session){
+        Users user = (Users) session.getAttribute("user");
+        if(user == null){
+            return ResponseEntity.notFound().build();
+        }
+        Optional<Rounds> best9HoleRound = roundsService.findBest9HoleRound(user.getId());
+        return ResponseEntity.ok().body(best9HoleRound);
+    }
+
+    @GetMapping("/handicap")
+    public ResponseEntity<Integer> getHandicap(HttpSession session){
+        Users user = (Users) session.getAttribute("user");
+        if(user == null){
+            return ResponseEntity.notFound().build();
+        }
+        Integer userHandicap = roundsService.handicap(user.getId());
+        return ResponseEntity.ok().body(userHandicap);
+    }
+
+
+
+
 
 
 

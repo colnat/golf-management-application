@@ -8,12 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.*;
 
-//only calculating 18 hole handicap cause it's the right way. Using the 20 most recent rounds
-//and averaging the best of 8.
-//can adjust the findByUserIdAndRoundLength to select top 20 by date
-//roundsRepository.findTop20ByUserIdAndRoundLengthOrderByDateDesc(userId, 18);
-//Do a check if the course is a 9 hole course then multiply the course par by two if it is
-//for the handicap
+
 @Service
 public class RoundsService {
 
@@ -31,9 +26,6 @@ public class RoundsService {
         Courses course = coursesRepository.findById(courseId)
                 .orElseThrow(() -> new IllegalArgumentException("Course was not found" + courseId));
 
-        if(course == null){
-            throw new IllegalArgumentException("Course not found");
-        }
         List<Round_Holes> holes = round.getRoundHolesList(); //get holes played in round
         round.setRoundLength(holes.size());
 
@@ -56,6 +48,7 @@ public class RoundsService {
 
     public void deleteRound(Integer roundId){ roundsRepository.deleteById(roundId);}
 
+    //Find the minimum value the user went over par for 18 hole round
     public Optional<Rounds> findBest18HoleRound(Integer userId){
         List<Rounds> findUsersRounds = roundsRepository.findByUserIdAndRoundLength(userId,18);
         if(findUsersRounds.isEmpty()){
@@ -64,18 +57,18 @@ public class RoundsService {
         return findUsersRounds.stream().min(Comparator.comparing(round -> round.getRoundScore() - round.getCourse().getEighteenHolePar()));
     }
 
-    //If a user wants to view rounds they played at a particular course
-    public List<Rounds> getRoundsByCourse(Integer courseId) {
-        return roundsRepository.findByCourseId(courseId);
+    public Optional<Rounds> findBest9HoleRound(Integer userId){
+        List<Rounds> findUsersRounds = roundsRepository.findByUserIdAndRoundLength(userId,9);
+        if(findUsersRounds.isEmpty()){
+            throw new RuntimeException("User needs at least one 9 hole round");
+        }
+        return findUsersRounds.stream().min(Comparator.comparing(round -> round.getRoundScore() - round.getCourse().getNineHolePar()));
     }
 
-    //find a users handicap
+    //only calculating 18 hole handicap because it's the right way. Using the 20 most recent rounds
+    //and averaging the best of 8.
     public Integer handicap(Integer userId) {
-        List<Rounds> getAllRounds = roundsRepository.findByUserIdAndRoundLength(userId, 18);
-        if (getAllRounds.size() < 20) {
-            throw new RuntimeException("Must have at least 20 rounds to calculate handicap.");
-        }
-        List<Rounds> mostRecentRounds = getAllRounds.subList(0, 20);
+        List<Rounds> mostRecentRounds = roundsRepository.findTop20ByUserIdAndRoundLengthOrderByDatePlayedDesc(userId,18);
         List<Integer> scores = new ArrayList<>();
         for (Rounds mostRecentRound : mostRecentRounds) {
          int score = mostRecentRound.getRoundScore() - mostRecentRound.getCourse().getEighteenHolePar();

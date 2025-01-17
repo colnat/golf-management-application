@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173/", allowCredentials = "true")
@@ -44,4 +46,25 @@ public class CourseController {
         coursesService.deleteCourse(courseId);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/favourite-course")
+    public ResponseEntity<Optional<Courses>> favouriteCourse(HttpSession session){
+        Users user = (Users) session.getAttribute("user");
+        if(user == null){
+            return ResponseEntity.notFound().build();
+        }
+        Optional<Courses> getFavouriteCourse = coursesService.findFavouriteCourse(user.getId());
+        return ResponseEntity.ok().body(getFavouriteCourse);
+    }
+
+    @GetMapping("/most-played-course")
+    public ResponseEntity<Optional<Map.Entry<Courses,Long>>> mostPlayedCourse(HttpSession session){
+        Users user = (Users) session.getAttribute("user");
+        if(user == null){
+            return ResponseEntity.notFound().build();
+        }
+        Optional<Map.Entry<Courses,Long>> mostPlayed = coursesService.mostPlayedCourse(user.getId());
+        return ResponseEntity.ok().body(mostPlayed);
+    }
+
 }
