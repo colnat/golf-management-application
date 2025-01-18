@@ -22,7 +22,7 @@ public class CourseController {
     private CoursesService coursesService;
 
     @PostMapping("/saveCourse")
-    public ResponseEntity<Courses> addCourse(@Valid @RequestBody Courses course, HttpSession session){
+    public ResponseEntity<Courses> addCourse(@Valid @RequestBody Courses course, HttpSession session) {
         Users user = (Users) session.getAttribute("user");
         System.out.println(course);
         Courses savedCourse = coursesService.addCourse(course, user.getId());
@@ -30,17 +30,17 @@ public class CourseController {
     }
 
     @GetMapping("/getCourses")
-    public  ResponseEntity <List<Courses>> getCourses (HttpSession session){
+    public ResponseEntity<List<Courses>> getCourses(HttpSession session) {
         Users user = (Users) session.getAttribute("user");
         List<Courses> getUserCourses = coursesService.getCourses(user.getId());
         return ResponseEntity.ok().body(getUserCourses);
     }
 
     @DeleteMapping("/delete-course/{courseId}")
-    public ResponseEntity<?> deleteCourse(@PathVariable Integer courseId, HttpSession session){
+    public ResponseEntity<?> deleteCourse(@PathVariable Integer courseId, HttpSession session) {
         Users user = (Users) session.getAttribute("user");
         System.out.println(courseId);
-        if(user == null){
+        if (user == null) {
             return ResponseEntity.notFound().build();
         }
         coursesService.deleteCourse(courseId);
@@ -48,9 +48,9 @@ public class CourseController {
     }
 
     @GetMapping("/favourite-course")
-    public ResponseEntity<Optional<Courses>> favouriteCourse(HttpSession session){
+    public ResponseEntity<Optional<Courses>> favouriteCourse(HttpSession session) {
         Users user = (Users) session.getAttribute("user");
-        if(user == null){
+        if (user == null) {
             return ResponseEntity.notFound().build();
         }
         Optional<Courses> getFavouriteCourse = coursesService.findFavouriteCourse(user.getId());
@@ -58,12 +58,12 @@ public class CourseController {
     }
 
     @GetMapping("/most-played-course")
-    public ResponseEntity<Optional<Map.Entry<Courses,Long>>> mostPlayedCourse(HttpSession session){
+    public ResponseEntity<Optional<Map.Entry<Courses, Long>>> mostPlayedCourse(HttpSession session) {
         Users user = (Users) session.getAttribute("user");
-        if(user == null){
+        if (user == null) {
             return ResponseEntity.notFound().build();
         }
-        Optional<Map.Entry<Courses,Long>> mostPlayed = coursesService.mostPlayedCourse(user.getId());
+        Optional<Map.Entry<Courses, Long>> mostPlayed = coursesService.mostPlayedCourse(user.getId());
         return ResponseEntity.ok().body(mostPlayed);
     }
 

@@ -23,10 +23,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Users> login( @RequestBody Users user, HttpSession session){
-           Users authUser = usersService.loginUser(user.getEmail(),user.getPassword());
-           session.setAttribute("user",authUser);
-           System.out.println(authUser);
-          return ResponseEntity.ok().body(authUser);
+    public ResponseEntity<Users> login(@RequestBody Users user, HttpSession session) {
+        Users authUser = usersService.loginUser(user.getEmail(), user.getPassword());
+        session.setAttribute("user", authUser);
+        System.out.println(authUser);
+        return ResponseEntity.ok().body(authUser);
     }
 }
