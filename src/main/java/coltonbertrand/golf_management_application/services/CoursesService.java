@@ -78,11 +78,12 @@ public class CoursesService {
 
     //Finds the course that appears most often in the users rounds and returns that course, along with how many times
     //and returns null if nothing is found
-    public Optional<Map.Entry<Courses, Long>> mostPlayedCourse(Integer userId) {
+    public Optional<Courses> mostPlayedCourse(Integer userId) {
         List<Rounds> userRounds = roundsRepository.findByUserId(userId);
         return userRounds.stream().collect(Collectors.groupingBy(Rounds::getCourse, Collectors.counting()))
                 .entrySet()
                 .stream()
-                .max(Map.Entry.comparingByValue());
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey);
     }
 }

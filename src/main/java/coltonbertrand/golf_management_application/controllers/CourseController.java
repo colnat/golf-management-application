@@ -58,12 +58,12 @@ public class CourseController {
     }
 
     @GetMapping("/most-played-course")
-    public ResponseEntity<Optional<Map.Entry<Courses, Long>>> mostPlayedCourse(HttpSession session) {
+    public ResponseEntity<Optional<Courses>> mostPlayedCourse(HttpSession session) {
         Users user = (Users) session.getAttribute("user");
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
-        Optional<Map.Entry<Courses, Long>> mostPlayed = coursesService.mostPlayedCourse(user.getId());
+        Optional<Courses> mostPlayed = coursesService.mostPlayedCourse(user.getId());
         return ResponseEntity.ok().body(mostPlayed);
     }
 

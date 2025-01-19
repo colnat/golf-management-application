@@ -43,9 +43,6 @@ public class Courses implements Serializable {
     private Users user;
 
     @OneToMany(mappedBy = "course",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @ToString.Exclude
     private List<Course_Holes> courseHolesList;
-
-
 
 }

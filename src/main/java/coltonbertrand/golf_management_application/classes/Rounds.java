@@ -50,7 +50,6 @@ public class Rounds implements Serializable {
     private Courses course;
 
     @OneToMany(mappedBy = "round",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @ToString.Exclude
     private List<Round_Holes> roundHolesList;
 
 }
