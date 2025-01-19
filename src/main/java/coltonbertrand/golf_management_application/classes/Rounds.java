@@ -2,7 +2,7 @@ package coltonbertrand.golf_management_application.classes;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -50,6 +50,7 @@ public class Rounds implements Serializable {
     private Courses course;
 
     @OneToMany(mappedBy = "round",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ToString.Exclude
     private List<Round_Holes> roundHolesList;
 
 }

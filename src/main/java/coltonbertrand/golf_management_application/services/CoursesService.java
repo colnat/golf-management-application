@@ -70,20 +70,16 @@ public class CoursesService {
         coursesRepository.deleteById(courseId);
     }
 
+    //Returns null if nothing is found
     public Optional<Courses> findFavouriteCourse(Integer userId) {
         List<Courses> userCourses = coursesRepository.findByUserId(userId);
-        if (userCourses.isEmpty()) {
-            throw new RuntimeException("User needs at least one course");
-        }
         return userCourses.stream().max(Comparator.comparing(Courses::getCourseRating));
     }
 
     //Finds the course that appears most often in the users rounds and returns that course, along with how many times
+    //and returns null if nothing is found
     public Optional<Map.Entry<Courses, Long>> mostPlayedCourse(Integer userId) {
         List<Rounds> userRounds = roundsRepository.findByUserId(userId);
-        if (userRounds.isEmpty()) {
-            throw new RuntimeException("Must have at least one round");
-        }
         return userRounds.stream().collect(Collectors.groupingBy(Rounds::getCourse, Collectors.counting()))
                 .entrySet()
                 .stream()

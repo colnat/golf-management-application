@@ -4,7 +4,7 @@ package coltonbertrand.golf_management_application.classes;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -43,7 +43,9 @@ public class Courses implements Serializable {
     private Users user;
 
     @OneToMany(mappedBy = "course",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ToString.Exclude
     private List<Course_Holes> courseHolesList;
+
 
 
 }
