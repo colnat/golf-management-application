@@ -28,11 +28,13 @@ public class Insights {
 
         this.chatClient = builder
                 .defaultSystem("Analyze the following stats from a golf round. Pay close attention to the stats" +
-                        "The stats contain the users number of three putts that round, slices or draws, fairways hit," +
-                        "round score, and course par. If the number of three putts is above 5 suggest a drill to fix their" +
-                        "putting. If the slices or draws are above 3 suggest a drill to stop slicing or drawing the ball" +
-                        "when driving. If the fairways hit is above 6 congratulate them. Add more tips or tricks at your will." +
-                        "please keep the response below 50 words. Also add what their stats were")
+                        "The stats contain how many holes played, number of three putts that round, slices or draws, fairways hit," +
+                        "round score, and course par. For an 18 hole round if the number of three putts is above 5 suggest a drill to fix their" +
+                        "putting. If the slices or draws are above 5 suggest a drill to stop slicing or drawing the ball" +
+                        "when driving. If the fairways hit is above 10 congratulate them. For a 9 hole round 2 for three putts" +
+                        "3 for slices or draws and 5 for fairways hit. Add more tips or tricks at your will. Throw in some other" +
+                        "golf tips as well. Be creative" +
+                        "please keep the response below 75 words.")
                 .build();
     }
 
@@ -40,25 +42,14 @@ public class Insights {
     public String insights(HttpSession session){
         Users user = (Users) session.getAttribute("user");
         Rounds round = roundsRepository.findTop1ByUserIdOrderByDatePlayedDesc(user.getId());
-        String response;
-        if(round.getRoundLength() == 18) {
-            response = chatClient.prompt()
-                    .user("Three Putts: %d, Slices or Draws: %d, Fairways Hit: %d, Round Score: %d, Course Par: %d"
-                            .formatted(round.getThreePutts(), round.getSlicesOrDraws(), round.getFairwaysHit(), round.getRoundScore(),
-                                    round.getCourse().getEighteenHolePar()))
-                    .call()
-                    .content();
 
-        }
-        else{
-            response = chatClient.prompt()
-                    .user("Three Putts: %d, Slices or Draws: %d, Fairways Hit: %d, Round Score: %d, Course Par: %d"
-                            .formatted(round.getThreePutts(), round.getSlicesOrDraws(), round.getFairwaysHit(), round.getRoundScore(),
-                                    round.getCourse().getNineHolePar()))
-                    .call()
-                    .content();
+        String prompt = "Round Length: %d, Three Putts: %d, Slices or Draws: %d, Fairways Hit: %d"
+                .formatted(round.getRoundLength(), round.getThreePutts(), round.getSlicesOrDraws(), round.getFairwaysHit());
 
-        }
+        String response = chatClient.prompt()
+                .user(prompt)
+                .call()
+                .content();
         System.out.println(response);
         return response;
 
