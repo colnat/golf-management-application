@@ -1,6 +1,5 @@
 package coltonbertrand.golf_management_application.controllers;
 
-
 import coltonbertrand.golf_management_application.classes.Rounds;
 import coltonbertrand.golf_management_application.classes.Users;
 import coltonbertrand.golf_management_application.repositories.RoundsRepository;
@@ -17,14 +16,14 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "http://localhost:5173/", allowCredentials = "true")
 @RequestMapping("/get-insights")
-public class Insights {
+public class InsightsController {
 
     @Autowired
     private RoundsRepository roundsRepository;
 
     private final ChatClient chatClient;
 
-    public Insights(ChatClient.Builder builder){
+    public InsightsController(ChatClient.Builder builder){
 
         this.chatClient = builder
                 .defaultSystem("Analyze the following stats from a users most recent golf rounds. Pay close attention to the stats" +
@@ -42,6 +41,7 @@ public class Insights {
     public String insights(HttpSession session){
         Users user = (Users) session.getAttribute("user");
         List<Rounds> topFiveRounds = roundsRepository.findTop5ByUserIdOrderByDatePlayedDesc(user.getId());
+        if(topFiveRounds == null) return null;
         StringBuilder prompt = new StringBuilder();
         for(Rounds round : topFiveRounds) {
             prompt.append("```Users Name: %s, Date Played: %s, Round Length: %d, Three Putts: %d, Slices or Draws: %d, Fairways Hit: %d```"
