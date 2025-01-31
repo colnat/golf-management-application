@@ -13,5 +13,5 @@ public interface RoundsRepository extends JpaRepository<Rounds,Integer> {
     List<Rounds> findByUserId(Integer userId);
     List<Rounds> findByUserIdAndRoundLength(Integer userId, Integer roundLength);
     List<Rounds> findTop20ByUserIdAndRoundLengthOrderByDatePlayedDesc(Integer userId, Integer roundLength);
-    Rounds findTop1ByUserIdOrderByDatePlayedDesc(Integer userId);
+    List<Rounds> findTop5ByUserIdOrderByDatePlayedDesc(Integer userId);
 }
