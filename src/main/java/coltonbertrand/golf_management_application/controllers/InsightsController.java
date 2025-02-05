@@ -6,6 +6,7 @@ import coltonbertrand.golf_management_application.repositories.RoundsRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,28 +32,29 @@ public class InsightsController {
                         " fix that. For a 9 hole round this would be 3 and for a 18 hole round this would be 6" +
                         " If a user is consistently getting a high amount of slices. Give advice on how to fix a slice when driving " +
                         " For a 9 hole round this would be 3 and for a 18 hole round this would be 6"+
-                        " When a user is doing a good job on hitting fairways say congrats, also if you notice improvement. Offer other golf tips and general advice too"+
+                        " When a user is doing a good job on hitting fairways say congrats, also if you notice improvement. Offer other golf tips and general advice too" +
                         " Each round is delimited by ```"+
                         " please keep the response below 75 words.")
                 .build();
     }
 
     @GetMapping("/insights")
-    public String insights(HttpSession session){
-        Users user = (Users) session.getAttribute("user");
-        List<Rounds> topFiveRounds = roundsRepository.findTop5ByUserIdOrderByDatePlayedDesc(user.getId());
-        if(topFiveRounds == null) return null;
-        StringBuilder prompt = new StringBuilder();
-        for(Rounds round : topFiveRounds) {
-            prompt.append("```Users Name: %s, Date Played: %s, Round Length: %d, Three Putts: %d, Slices or Draws: %d, Fairways Hit: %d```"
-                    .formatted(round.getUser().getFirstName(),round.getDatePlayed(),round.getRoundLength(), round.getThreePutts(), round.getSlicesOrDraws(), round.getFairwaysHit()));
-        }
-        String response = chatClient.prompt()
-                .user(prompt.toString())
-                .call()
-                .content();
-        System.out.println(response);
-        return response;
-
+    public ResponseEntity<String> insights(HttpSession session){
+            Users user = (Users) session.getAttribute("user");
+            List<Rounds> topFiveRounds = roundsRepository.findTop5ByUserIdOrderByDatePlayedDesc(user.getId());
+            if (topFiveRounds.isEmpty()) {
+                return ResponseEntity.ok().body("Try adding a round to see how you can improve your game");
+            }
+            StringBuilder prompt = new StringBuilder();
+            for(Rounds round : topFiveRounds) {
+                prompt.append("```Users Name: %s, Date Played: %s, Round Length: %d, Three Putts: %d, Slices or Draws: %d, Fairways Hit: %d```"
+                        .formatted(round.getUser().getFirstName(),round.getDatePlayed(),round.getRoundLength(), round.getThreePutts(), round.getSlicesOrDraws(), round.getFairwaysHit()));
+            }
+            String response = chatClient.prompt()
+                    .user(prompt.toString())
+                    .call()
+                    .content();
+            System.out.println(response);
+            return ResponseEntity.ok().body(response);
     }
 }

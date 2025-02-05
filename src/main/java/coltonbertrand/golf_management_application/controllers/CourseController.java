@@ -39,9 +39,6 @@ public class CourseController {
     public ResponseEntity<?> deleteCourse(@PathVariable Integer courseId, HttpSession session) {
         Users user = (Users) session.getAttribute("user");
         System.out.println(courseId);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
         coursesService.deleteCourse(courseId);
         return ResponseEntity.ok().build();
     }
@@ -49,9 +46,6 @@ public class CourseController {
     @GetMapping("/favourite-course")
     public ResponseEntity<Optional<Courses>> favouriteCourse(HttpSession session) {
         Users user = (Users) session.getAttribute("user");
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
         Optional<Courses> getFavouriteCourse = coursesService.findFavouriteCourse(user.getId());
         return ResponseEntity.ok().body(getFavouriteCourse);
     }
@@ -59,9 +53,6 @@ public class CourseController {
     @GetMapping("/most-played-course")
     public ResponseEntity<Optional<Courses>> mostPlayedCourse(HttpSession session) {
         Users user = (Users) session.getAttribute("user");
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
         Optional<Courses> mostPlayed = coursesService.mostPlayedCourse(user.getId());
         return ResponseEntity.ok().body(mostPlayed);
     }

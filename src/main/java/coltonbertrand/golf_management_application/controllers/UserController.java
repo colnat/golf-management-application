@@ -29,4 +29,13 @@ public class UserController {
         System.out.println(authUser);
         return ResponseEntity.ok().body(authUser);
     }
+
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout(HttpSession session){
+        session.invalidate();
+        return ResponseEntity.ok().build();
+
+    }
+
+
 }

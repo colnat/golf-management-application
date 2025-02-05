@@ -25,6 +25,9 @@ public class RoundController {
     @PostMapping("/saveRound/{courseId}")
     public ResponseEntity<Rounds> addRound(@Valid @RequestBody Rounds round, @PathVariable Integer courseId, HttpSession session) {
         Users user = (Users) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
         System.out.println(user);
         System.out.println(round);
         Rounds savedRound = roundsService.addRound(round, courseId, user.getId());
@@ -34,6 +37,9 @@ public class RoundController {
     @GetMapping("/getRounds")
     public ResponseEntity<List<Rounds>> getRounds(HttpSession session) {
         Users user = (Users) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
         List<Rounds> userRounds = roundsService.getRoundsByUser(user.getId());
         return ResponseEntity.ok().body(userRounds);
     }
