@@ -70,7 +70,7 @@ public class RoundsService {
     public Integer handicap(Integer userId) {
         List<Rounds> mostRecentRounds = roundsRepository.findTop20ByUserIdAndRoundLengthOrderByDatePlayedDesc(userId, 18);
         if(mostRecentRounds.size() < 20){
-            return null;
+            return 101;
         }
         List<Integer> scores = new ArrayList<>();
         for (Rounds mostRecentRound : mostRecentRounds) {

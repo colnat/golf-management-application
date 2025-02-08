@@ -25,9 +25,6 @@ public class RoundController {
     @PostMapping("/saveRound/{courseId}")
     public ResponseEntity<Rounds> addRound(@Valid @RequestBody Rounds round, @PathVariable Integer courseId, HttpSession session) {
         Users user = (Users) session.getAttribute("user");
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
         System.out.println(user);
         System.out.println(round);
         Rounds savedRound = roundsService.addRound(round, courseId, user.getId());
@@ -37,9 +34,6 @@ public class RoundController {
     @GetMapping("/getRounds")
     public ResponseEntity<List<Rounds>> getRounds(HttpSession session) {
         Users user = (Users) session.getAttribute("user");
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
         List<Rounds> userRounds = roundsService.getRoundsByUser(user.getId());
         return ResponseEntity.ok().body(userRounds);
     }
@@ -47,9 +41,6 @@ public class RoundController {
     @DeleteMapping("/deleteRound/{roundId}")
     public ResponseEntity<?> deleteRound(@PathVariable Integer roundId, HttpSession session) {
         Users user = (Users) session.getAttribute("user");
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
         roundsService.deleteRound(roundId);
         return ResponseEntity.ok().build();
     }
@@ -57,9 +48,6 @@ public class RoundController {
     @GetMapping("/best-18-hole")
     public ResponseEntity<Optional<Rounds>> findBest18HoleRound(HttpSession session) {
         Users user = (Users) session.getAttribute("user");
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
         Optional<Rounds> best18HoleRound = roundsService.findBest18HoleRound(user.getId());
         return ResponseEntity.ok().body(best18HoleRound);
     }
@@ -67,9 +55,6 @@ public class RoundController {
     @GetMapping("/best-9-hole")
     public ResponseEntity<Optional<Rounds>> findBest9HoleRound(HttpSession session) {
         Users user = (Users) session.getAttribute("user");
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
         Optional<Rounds> best9HoleRound = roundsService.findBest9HoleRound(user.getId());
         return ResponseEntity.ok().body(best9HoleRound);
     }
@@ -77,9 +62,6 @@ public class RoundController {
     @GetMapping("/handicap")
     public ResponseEntity<Integer> getHandicap(HttpSession session) {
         Users user = (Users) session.getAttribute("user");
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
         Integer userHandicap = roundsService.handicap(user.getId());
         return ResponseEntity.ok().body(userHandicap);
     }
