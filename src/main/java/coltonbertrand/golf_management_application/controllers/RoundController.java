@@ -25,8 +25,6 @@ public class RoundController {
     @PostMapping("/saveRound/{courseId}")
     public ResponseEntity<Rounds> addRound(@Valid @RequestBody Rounds round, @PathVariable Integer courseId, HttpSession session) {
         Users user = (Users) session.getAttribute("user");
-        System.out.println(user);
-        System.out.println(round);
         Rounds savedRound = roundsService.addRound(round, courseId, user.getId());
         return ResponseEntity.ok().body(savedRound);
     }

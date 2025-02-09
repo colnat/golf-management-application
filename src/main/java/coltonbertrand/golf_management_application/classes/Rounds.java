@@ -1,12 +1,10 @@
 package coltonbertrand.golf_management_application.classes;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -34,9 +32,8 @@ public class Rounds implements Serializable {
     private Integer roundScore;
 
     @Column(name="date_played")
-    @DateTimeFormat(pattern = "MM/dd/yyyy")
     @NotNull
-    private Date datePlayed;
+    private LocalDate datePlayed;
 
     @Column(name = "round_length")
     private Integer roundLength;
