@@ -33,6 +33,7 @@ public class InsightsController {
                         " If a user is consistently getting a high amount of slices. Give advice on how to fix a slice when driving " +
                         " For a 9 hole round this would be 3 and for a 18 hole round this would be 6"+
                         " When a user is doing a good job on hitting fairways say congrats, also if you notice improvement. Offer other golf tips and general advice too" +
+                        " Also tell the user how much they can lower their score if they improve in these areas " +
                         " Each round is delimited by ```"+
                         " please keep the response below 75 words.")
                 .build();
