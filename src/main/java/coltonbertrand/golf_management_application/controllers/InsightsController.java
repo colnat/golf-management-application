@@ -7,10 +7,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,13 +31,14 @@ public class InsightsController {
                         " For a 9 hole round this would be 3 and for a 18 hole round this would be 6"+
                         " When a user is doing a good job on hitting fairways say congrats, also if you notice improvement. Offer other golf tips and general advice too" +
                         " Also tell the user how much they can lower their score if they improve in these areas " +
+                        " Recommend courses near the user if they have a location, if not don't mention it" +
                         " Each round is delimited by ```"+
                         " please keep the response below 75 words.")
                 .build();
     }
 
     @GetMapping("/insights")
-    public ResponseEntity<String> insights(HttpSession session){
+    public ResponseEntity<String> insights(HttpSession session, @RequestParam(required = false) String userLocation){
             Users user = (Users) session.getAttribute("user");
             List<Rounds> topFiveRounds = roundsRepository.findTop5ByUserIdOrderByDatePlayedDesc(user.getId());
             if (topFiveRounds.isEmpty()) {
@@ -48,8 +46,8 @@ public class InsightsController {
             }
             StringBuilder prompt = new StringBuilder();
             for(Rounds round : topFiveRounds) {
-                prompt.append("```Users Name: %s, Date Played: %s, Round Length: %d, Three Putts: %d, Slices or Draws: %d, Fairways Hit: %d```"
-                        .formatted(round.getUser().getFirstName(),round.getDatePlayed(),round.getRoundLength(), round.getThreePutts(), round.getSlicesOrDraws(), round.getFairwaysHit()));
+                prompt.append("```Users Name: %s, User Location: %s, Date Played: %s, Round Length: %d, Three Putts: %d, Slices or Draws: %d, Fairways Hit: %d```"
+                        .formatted(round.getUser().getFirstName(), userLocation, round.getDatePlayed(),round.getRoundLength(), round.getThreePutts(), round.getSlicesOrDraws(), round.getFairwaysHit()));
             }
             String response = chatClient.prompt()
                     .user(prompt.toString())
