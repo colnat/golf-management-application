@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface RoundHolesRepository extends JpaRepository<Round_Holes,Integer> {
-    List<Round_Holes> findByRoundId(Integer roundId);
+
 }

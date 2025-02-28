@@ -29,6 +29,19 @@ public class RoundController {
         return ResponseEntity.ok().body(savedRound);
     }
 
+    @PutMapping("/update-round/{roundId}/{courseId}")
+    public ResponseEntity<Rounds> updateRound(@Valid @RequestBody Rounds round, @PathVariable Integer courseId, HttpSession session){
+        Users user = (Users) session.getAttribute("user");
+        Rounds updateRound = roundsService.addRound(round, courseId, user.getId());
+        return ResponseEntity.ok().body(updateRound);
+    }
+
+    @GetMapping("/get-round-by-id/{roundId}")
+    public ResponseEntity<Optional<Rounds>> getRoundById(@PathVariable Integer roundId){
+        Optional<Rounds> getRound = roundsService.getRoundById(roundId);
+        return ResponseEntity.ok().body(getRound);
+    }
+
     @GetMapping("/getRounds")
     public ResponseEntity<List<Rounds>> getRounds(HttpSession session) {
         Users user = (Users) session.getAttribute("user");

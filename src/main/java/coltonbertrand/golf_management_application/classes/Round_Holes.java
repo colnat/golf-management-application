@@ -32,6 +32,7 @@ public class Round_Holes implements Serializable {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="round_id")
+    @ToString.Exclude
     private Rounds round;
 
 }

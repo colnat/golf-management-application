@@ -48,6 +48,10 @@ public class RoundsService {
         return roundsRepository.findByUserIdOrderByDatePlayedDesc(userId);
     }
 
+    public Optional<Rounds> getRoundById(Integer roundId){
+        return roundsRepository.findById(roundId);
+    }
+
     public void deleteRound(Integer roundId) {
         roundsRepository.deleteById(roundId);
     }

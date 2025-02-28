@@ -40,9 +40,12 @@ public class Courses implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
+    @ToString.Exclude
     private Users user;
 
     @OneToMany(mappedBy = "course",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @OrderBy("courseHoleNumber ASC")
     private List<Course_Holes> courseHolesList;
 
 }

@@ -28,6 +28,20 @@ public class CourseController {
         return ResponseEntity.ok().body(savedCourse);
     }
 
+    @PutMapping("/update-course/{courseId}")
+    public ResponseEntity<Courses> updateCourse(@Valid @RequestBody Courses course, HttpSession session){
+        Users user = (Users) session.getAttribute("user");
+        Courses updatedCourse = coursesService.addCourse(course, user.getId());
+        return ResponseEntity.ok().body(updatedCourse);
+    }
+
+    @GetMapping("/get-course-by-id/{courseId}")
+    public ResponseEntity<Optional<Courses>> getCourseById(@PathVariable Integer courseId){
+        Optional<Courses> course = coursesService.getCourseById(courseId);
+        System.out.println(course);
+        return ResponseEntity.ok().body(course);
+    }
+
     @GetMapping("/getCourses")
     public ResponseEntity<List<Courses>> getCourses(HttpSession session) {
         Users user = (Users) session.getAttribute("user");

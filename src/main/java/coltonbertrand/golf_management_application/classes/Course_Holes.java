@@ -37,5 +37,6 @@ public class Course_Holes implements Serializable {
     @JsonIgnore
     @JoinColumn(name="course_id")
     @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Courses course;
 }

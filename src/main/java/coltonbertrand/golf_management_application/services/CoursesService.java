@@ -70,6 +70,8 @@ public class CoursesService {
         coursesRepository.deleteById(courseId);
     }
 
+    public Optional<Courses> getCourseById(Integer courseId){return coursesRepository.findById(courseId);}
+
     //Returns null if nothing is found
     public Optional<Courses> findFavouriteCourse(Integer userId) {
         List<Courses> userCourses = coursesRepository.findByUserId(userId);

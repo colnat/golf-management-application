@@ -40,13 +40,17 @@ public class Rounds implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
+    @ToString.Exclude
     private Users user;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "course_id")
+    @ToString.Exclude
     private Courses course;
 
     @OneToMany(mappedBy = "round",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OrderBy("roundHoleNumber ASC")
+    @ToString.Exclude
     private List<Round_Holes> roundHolesList;
 
 }
