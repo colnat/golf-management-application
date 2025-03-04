@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -31,6 +32,9 @@ public class CourseController {
     @PutMapping("/update-course/{courseId}")
     public ResponseEntity<Courses> updateCourse(@Valid @RequestBody Courses course, HttpSession session){
         Users user = (Users) session.getAttribute("user");
+        if(!Objects.equals(user.getId(), course.getUser().getId())){
+            return ResponseEntity.badRequest().build();
+        }
         Courses updatedCourse = coursesService.addCourse(course, user.getId());
         return ResponseEntity.ok().body(updatedCourse);
     }
@@ -53,7 +57,7 @@ public class CourseController {
     public ResponseEntity<?> deleteCourse(@PathVariable Integer courseId, HttpSession session) {
         Users user = (Users) session.getAttribute("user");
         System.out.println(courseId);
-        coursesService.deleteCourse(courseId);
+        coursesService.deleteCourse(courseId, user.getId());
         return ResponseEntity.ok().build();
     }
 

@@ -10,10 +10,7 @@ import coltonbertrand.golf_management_application.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 //Add to addCourse to validate the user has not saved a course with that name before
@@ -66,7 +63,11 @@ public class CoursesService {
         return coursesRepository.findByUserId(user_id);
     }
 
-    public void deleteCourse(Integer courseId) {
+    public void deleteCourse(Integer courseId, Integer userId) {
+        Courses course = coursesRepository.findById(courseId).orElseThrow(() -> new IllegalArgumentException("course not found"));
+        if(!Objects.equals(userId,course.getUser().getId())){
+            throw new IllegalArgumentException("User does not own course");
+        }
         coursesRepository.deleteById(courseId);
     }
 

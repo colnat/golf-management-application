@@ -52,7 +52,13 @@ public class RoundsService {
         return roundsRepository.findById(roundId);
     }
 
-    public void deleteRound(Integer roundId) {
+    public void deleteRound(Integer roundId,Integer userId) {
+        Rounds round = roundsRepository.findById(roundId)
+                        .orElseThrow(() -> new IllegalArgumentException("Round not found"));
+
+        if(!Objects.equals(userId,round.getUser().getId())){
+            throw new IllegalArgumentException("User does not own round");
+        }
         roundsRepository.deleteById(roundId);
     }
 

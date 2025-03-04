@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -32,6 +33,9 @@ public class RoundController {
     @PutMapping("/update-round/{roundId}/{courseId}")
     public ResponseEntity<Rounds> updateRound(@Valid @RequestBody Rounds round, @PathVariable Integer courseId, HttpSession session){
         Users user = (Users) session.getAttribute("user");
+        if(!Objects.equals(user.getId(), round.getUser().getId())){
+            return ResponseEntity.badRequest().build();
+        }
         Rounds updateRound = roundsService.addRound(round, courseId, user.getId());
         return ResponseEntity.ok().body(updateRound);
     }
@@ -52,7 +56,7 @@ public class RoundController {
     @DeleteMapping("/deleteRound/{roundId}")
     public ResponseEntity<?> deleteRound(@PathVariable Integer roundId, HttpSession session) {
         Users user = (Users) session.getAttribute("user");
-        roundsService.deleteRound(roundId);
+        roundsService.deleteRound(roundId, user.getId());
         return ResponseEntity.ok().build();
     }
 
