@@ -3,16 +3,16 @@ package coltonbertrand.golf_management_application.controllers;
 import coltonbertrand.golf_management_application.classes.Rounds;
 import coltonbertrand.golf_management_application.classes.Users;
 import coltonbertrand.golf_management_application.repositories.RoundsRepository;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173/", allowCredentials = "true")
 @RequestMapping("/get-insights")
 public class InsightsController {
 
@@ -38,16 +38,17 @@ public class InsightsController {
     }
 
     @GetMapping("/insights")
-    public ResponseEntity<String> insights(HttpSession session, @RequestParam(required = false) String userLocation){
-            Users user = (Users) session.getAttribute("user");
-            List<Rounds> topFiveRounds = roundsRepository.findTop5ByUserIdOrderByDatePlayedDesc(user.getId());
+    public ResponseEntity<String> insights( @RequestParam(required = false) String userLocation){
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Users currentUser = (Users) authentication.getPrincipal();
+            List<Rounds> topFiveRounds = roundsRepository.findTop5ByUserIdOrderByDatePlayedDesc(currentUser.getId());
             if (topFiveRounds.isEmpty()) {
                 return ResponseEntity.ok().body("Try adding a round to see how you can improve your game");
             }
             StringBuilder prompt = new StringBuilder();
             for(Rounds round : topFiveRounds) {
                 prompt.append("```Users Name: %s, User Location: %s, Date Played: %s, Round Length: %d, Three Putts: %d, Slices or Draws: %d, Fairways Hit: %d```"
-                        .formatted(user.getFirstName(), userLocation, round.getDatePlayed(),round.getRoundLength(), round.getThreePutts(), round.getSlicesOrDraws(), round.getFairwaysHit()));
+                        .formatted(currentUser.getFirstName(), userLocation, round.getDatePlayed(),round.getRoundLength(), round.getThreePutts(), round.getSlicesOrDraws(), round.getFairwaysHit()));
             }
             String response = chatClient.prompt()
                     .user(prompt.toString())
