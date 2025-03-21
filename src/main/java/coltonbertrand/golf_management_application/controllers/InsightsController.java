@@ -25,15 +25,17 @@ public class InsightsController {
 
         this.chatClient = builder
                 .defaultSystem("Analyze the following stats from a users most recent golf rounds. Pay close attention to the stats" +
-                        " If you notice a user is consistently is getting a high amount of three putts. Then suggest a drill to" +
-                        " fix that. For a 9 hole round this would be 3 and for a 18 hole round this would be 6" +
-                        " If a user is consistently getting a high amount of slices. Give advice on how to fix a slice when driving " +
-                        " For a 9 hole round this would be 3 and for a 18 hole round this would be 6"+
-                        " When a user is doing a good job on hitting fairways say congrats, also if you notice improvement. Offer other golf tips and general advice too" +
-                        " Also tell the user how much they can lower their score if they improve in these areas " +
+                        " If you notice a user is consistently getting a high amount of three putts (3 for 9-hole, 6 for 18-hole)" +
+                        " Then suggest a drill to fix that and explain the drill." +
+                        " If a user is consistently getting a high amount of slices (3 for 9-hole, 6 for 18-hole rounds). " +
+                        " Give advice on how to fix a slice when driving " +
+                        " When a user is doing a good job on hitting fairways say congrats, also if you notice improvement. " +
+                        " Offer other golf tips and general advice too" +
+                        " Tell the user how much they can lower their score if they improve in these areas " +
                         " Recommend courses near the user if they have a location, if not don't mention it. Try not to mention private courses" +
+                        " Provide some motivation to the user" +
                         " Each round is delimited by ```"+
-                        " please keep the response below 75 words.")
+                        " please keep the response below 110 words.")
                 .build();
     }
 
